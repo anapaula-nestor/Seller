@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 from src.model.base_model import BaseModel
 from src.dao.session import Session
 
