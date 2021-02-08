@@ -19,3 +19,4 @@ class Person(BaseModel):
         self.cnpj = cnpj
         self.phone = phone
         self.id_address = id_address
+
