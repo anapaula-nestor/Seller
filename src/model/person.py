@@ -1,5 +1,6 @@
 import sys
 sys.path.append('.')
+
 from sqlalchemy import Column, String, Integer, Boolean
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.sql.schema import ForeignKey
@@ -23,6 +24,7 @@ class Person(BaseModel):
         self.cnpj = cnpj
         self.phone = phone
         self.id_address = id_address
+
 
     @validates('name')
     def validate_name(self, key, name):
@@ -53,5 +55,5 @@ class Person(BaseModel):
     @validates('id_address')
     def validate_id_address(self, key, id_address):
         validate_type(id_address, int, key)
-        validate_be_greater_than_zero(id_address,key)
+        validate_be_greater_than_zero(id_address, key)
         return id_address
