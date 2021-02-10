@@ -12,47 +12,52 @@ def create_instance():
     return Seller(True, 1)
 
 
-def test_instance():
-    seller_dao = SellerDao()
+@pytest.fixture
+def create_dao():
+    return SellerDao()
+
+
+def test_instance(create_dao):
+    seller_dao = create_dao
     assert isinstance(seller_dao, SellerDao)
 
 
-def test_save(create_instance):
-    seller_saved = SellerDao().save(create_instance)
+def test_save(create_instance, create_dao):
+    seller_saved = create_dao.save(create_instance)
     assert seller_saved.id_ is not None
-    SellerDao().delete(seller_saved)
+    create_dao.delete(seller_saved)
 
 
-def test_not_save():
+def test_not_save(create_dao):
     with pytest.raises(UnmappedInstanceError):
-        SellerDao().save('seller')
+        create_dao.save('seller')
 
 
-def test_read_by_id(create_instance):
-    seller_saved = SellerDao().save(create_instance)
-    seller_read = SellerDao().read_by_id(seller_saved.id_)
+def test_read_by_id(create_instance, create_dao):
+    seller_saved = create_dao.save(create_instance)
+    seller_read = create_dao.read_by_id(seller_saved.id_)
     assert isinstance(seller_read, Seller)
-    SellerDao().delete(seller_read)
+    create_dao.delete(seller_read)
 
 
-def test_not_read_by_id():
+def test_not_read_by_id(create_dao):
     with pytest.raises(TypeError):
-        SellerDao().read_by_id('seller.id_')
+        create_dao.read_by_id('seller.id_')
 
 
-def test_read_all():
-    seller_read = SellerDao().read_all()
+def test_read_all(create_dao):
+    seller_read = create_dao.read_all()
     assert isinstance(seller_read, list)
 
 
-def test_delete(create_instance):
-    seller_saved = SellerDao().save(create_instance)
-    seller_read = SellerDao().read_by_id(seller_saved.id_)
-    SellerDao().delete(seller_read)
-    seller_read = SellerDao().read_by_id(seller_saved.id_)
+def test_delete(create_instance, create_dao):
+    seller_saved = create_dao.save(create_instance)
+    seller_read = create_dao.read_by_id(seller_saved.id_)
+    create_dao.delete(seller_read)
+    seller_read = create_dao.read_by_id(seller_saved.id_)
     assert seller_read is None
 
 
-def test_not_delete():
+def test_not_delete(create_dao):
     with pytest.raises(UnmappedInstanceError):
-        SellerDao().delete('seller_read')
+        create_dao.delete('seller_read')

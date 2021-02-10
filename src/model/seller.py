@@ -2,14 +2,15 @@ from sqlalchemy import Column, Integer, Boolean
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from src.model.base_model import BaseModel
-from src.utils.validators import validate_type, validate_not_empty
+from src.model.person import Person
+from src.utils.validators import validate_type
 
 
 class Seller(BaseModel):
     __tablename__ = 'seller'
     active = Column('active', Boolean, default=True)
     id_person = Column('id_person', Integer, ForeignKey('person.id'), nullable=False)
-    # person = relationship('seller', foreign_keys=[id_person])
+    person = relationship('Person', foreign_keys=[id_person])
 
     def __init__(self, active: bool, id_person: int) -> None:
         self.active = active

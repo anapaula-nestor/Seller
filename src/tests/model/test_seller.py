@@ -1,4 +1,6 @@
 import pytest
+import sys
+sys.path.append('.')
 from pytest import raises
 from src.model.seller import Seller
 from src.model.base_model import BaseModel
